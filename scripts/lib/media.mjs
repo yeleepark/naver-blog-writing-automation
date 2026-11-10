@@ -44,8 +44,14 @@ function prepare(file) {
   return dst;
 }
 
+// 업로드가 끝나 실제 이미지가 로드된 사진 컴포넌트의 id 목록.
+// (업로드 중에는 임시 컴포넌트가 만들어졌다가 완료되면 id 가 바뀌므로, 로드가 끝난 것만 센다)
 const imageIds = (frame) =>
-  frame.locator(".se-component.se-image .se-module-image").evaluateAll((els) => els.map((e) => e.id));
+  frame.locator(".se-component.se-image").evaluateAll((els) =>
+    els
+      .filter((e) => { const i = e.querySelector("img.se-image-resource"); return i && i.complete && i.naturalWidth > 0; })
+      .map((e) => e.querySelector(".se-module-image")?.id)
+      .filter(Boolean));
 
 async function waitUntil(fn, timeoutMs) {
   const end = Date.now() + timeoutMs;
@@ -94,7 +100,7 @@ export async function insertPhotos(page, frame, md, dir) {
       frame.locator(".se-image-toolbar-button").first().click(),
     ]);
     await chooser.setFiles(files);
-    const ok = await waitUntil(async () => (await imageIds(frame)).length >= before.length + files.length, 60000);
+    const ok = await waitUntil(async () => (await imageIds(frame)).length >= before.length + files.length, 90000);
     if (!ok) console.warn(`업로드 확인 시간 초과: ${tag}`);
     await sleep(SETTLE_MS);
     const added = (await imageIds(frame)).filter((id) => !before.includes(id));
