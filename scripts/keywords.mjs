@@ -18,7 +18,11 @@ if (!res.ok) { console.error(res.status, await res.text()); process.exit(1); }
 const { keywordList = [] } = await res.json();
 const n = (v) => (typeof v === "number" ? v : 5); // "< 10" 은 문자열로 옴 → 대략 5 처리
 const rows = keywordList
-  .map((k) => ({ 키워드: k.relKeyword, 월검색수: n(k.monthlyPcQty) + n(k.monthlyMobileQty), 모바일: k.monthlyMobileQty, PC: k.monthlyPcQty, 경쟁: k.compIdx }))
+  .map((k) => {
+    // 응답 필드명이 monthly*QcCnt 로 바뀌었다 (예전 monthly*Qty 도 호환)
+    const pc = k.monthlyPcQcCnt ?? k.monthlyPcQty, mo = k.monthlyMobileQcCnt ?? k.monthlyMobileQty;
+    return { 키워드: k.relKeyword, 월검색수: n(pc) + n(mo), 모바일: mo, PC: pc, 경쟁: k.compIdx };
+  })
   .sort((a, b) => b.월검색수 - a.월검색수)
   .slice(0, 30);
 console.table(rows);
