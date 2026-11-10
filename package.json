@@ -4,15 +4,24 @@
   "description": "Claude Code로 네이버 블로그 글을 쓰고, 내 로그인 크롬의 스마트에디터에 제목·본문·사진·지도까지 채워 주는 도구 (발행은 직접)",
   "license": "MIT",
   "type": "module",
-  "keywords": ["naver", "blog", "claude-code", "playwright", "smarteditor"],
+  "keywords": [
+    "naver",
+    "blog",
+    "claude-code",
+    "playwright",
+    "smarteditor"
+  ],
   "scripts": {
     "chrome": "sh scripts/open-chrome.sh",
     "init-skill": "node scripts/init-skill.mjs",
     "fill": "node scripts/fill-editor.mjs",
     "media": "node scripts/media.mjs",
-    "keywords": "node scripts/keywords.mjs"
+    "keywords": "node scripts/keywords.mjs",
+    "prepare": "git config core.hooksPath .githooks 2>/dev/null || true"
   },
-  "engines": { "node": ">=20.12" },
+  "engines": {
+    "node": ">=20.12"
+  },
   "packageManager": "pnpm@10.28.2",
   "dependencies": {
     "playwright": "^1.65.0"

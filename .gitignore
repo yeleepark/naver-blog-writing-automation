@@ -3,6 +3,8 @@ node_modules/
 
 # 비밀/세션 — 절대 커밋 금지
 .env
+.env.*
+!.env.example
 .chrome-profile/
 
 # 내 글과 내 스킬(개인 블로그 프로필)은 공개 레포에 올리지 않는다

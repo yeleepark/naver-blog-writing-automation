@@ -178,7 +178,7 @@ pnpm fill posts/2026-01-01-hongdae-sandwich.md --photos ~/Pictures/hongdae
 | `UPLOAD_SETTLE_MS` | | 사진 업로드 후 설명 입력 전 대기(ms), 느리면 늘리기 (기본 `4000`) |
 | `NAVER_AD_CUSTOMER_ID` `NAVER_AD_ACCESS_KEY` `NAVER_AD_SECRET_KEY` | | 키워드 조사용 검색광고 API 키 ([searchad.naver.com](https://searchad.naver.com) > 도구 > API 사용 관리) |
 
-`.env` 는 `.gitignore` 에 들어 있어 깃에 올라가지 않습니다.
+`.env` 는 `.gitignore` 에 들어 있어 깃에 올라가지 않습니다. 실수로 `git add -f` 를 해도 `.githooks/pre-commit` 이 `.env` 파일과 API 키 값이 담긴 커밋을 막습니다. (`pnpm install` 때 자동으로 켜집니다)
 
 ### 스킬을 내 것으로 바꾸기
 

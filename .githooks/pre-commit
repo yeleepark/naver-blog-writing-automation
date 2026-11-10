@@ -1,0 +1,17 @@
+#!/bin/sh
+# .env 와 API 키가 실수로 커밋되지 않도록 막는다. (pnpm install 시 core.hooksPath 가 자동 설정됨)
+staged=$(git diff --cached --name-only --diff-filter=ACM)
+
+# 1) .env, .env.local 등 환경변수 파일 (.env.example 은 허용)
+bad=$(printf '%s\n' "$staged" | grep -E '(^|/)\.env($|\.)' | grep -vE '(^|/)\.env\.example$')
+if [ -n "$bad" ]; then
+  printf '✋ 커밋 차단: 환경변수 파일이 스테이징되어 있습니다.\n%s\n   git restore --staged <파일> 로 빼세요.\n' "$bad" >&2
+  exit 1
+fi
+
+# 2) 변경 내용에 API 키 값이 들어 있는 경우 (값이 비어 있는 .env.example 형태는 허용)
+if git diff --cached -U0 | grep -E '^\+.*NAVER_AD_(CUSTOMER_ID|ACCESS_KEY|SECRET_KEY)=[^[:space:]]' >/dev/null; then
+  echo "✋ 커밋 차단: API 키 값이 포함된 변경이 있습니다. 값은 .env 에만 두세요." >&2
+  exit 1
+fi
+exit 0
