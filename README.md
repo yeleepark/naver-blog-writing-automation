@@ -235,4 +235,4 @@ pnpm fill posts/2026-01-01-hongdae-sandwich.md --photos ~/Pictures/hongdae
 
 ## 라이선스
 
-[MIT](LICENSE) © yeleepark
+[MIT](LICENSE) © yelee park
